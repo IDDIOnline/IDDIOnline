@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Holy Bible</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom font for the entire page */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen flex flex-col text-gray-800">
+
+    <header class="bg-white shadow-md py-4 px-6 md:px-8 lg:px-12 rounded-b-xl">
+        <div class="container mx-auto flex flex-col md:flex-row items-center justify-between">
+            <h1 class="text-3xl font-extrabold text-blue-700 mb-2 md:mb-0">
+                The Holy Bible
+            </h1>
+            <nav class="space-x-4">
+                <a href="#" class="text-blue-600 hover:text-blue-800 font-medium transition duration-300">Home</a>
+                <a href="#" class="text-blue-600 hover:text-blue-800 font-medium transition duration-300">About</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-grow container mx-auto p-6 md:p-8 lg:p-10 flex flex-col items-center">
+
+        <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg w-full max-w-2xl mb-8 border border-blue-200">
+            <label for="bibleVersionSelect" class="block text-sm font-medium text-gray-700 mb-2">Select Bible Version:</label>
+            <select id="bibleVersionSelect" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-200">
+                <option value="">Loading versions...</option>
+            </select>
+        </div>
+
+        <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg w-full max-w-2xl mb-8 border border-blue-200">
+            <h2 class="text-2xl font-semibold text-blue-700 mb-4 text-center">Load Full Chapter</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label for="bookSelectChapter" class="block text-sm font-medium text-gray-700 mb-2">Select Book:</label>
+                    <select id="bookSelectChapter" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-200">
+                        <option value="">Select a book</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="chapterSelectChapter" class="block text-sm font-medium text-gray-700 mb-2">Select Chapter:</label>
+                    <select id="chapterSelectChapter" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-200" disabled>
+                        <option value="">Select a book first</option>
+                    </select>
+                </div>
+            </div>
+            <button id="loadChapterBtn" class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700 transition duration-300 shadow-md">
+                Load Chapter
+            </button>
+        </div>
+
+        <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg w-full max-w-2xl mb-8 border border-blue-200">
+            <h2 class="text-2xl font-semibold text-blue-700 mb-4 text-center">Look Up Verse(s)</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                <div>
+                    <label for="bookInputVerse" class="block text-sm font-medium text-gray-700 mb-2">Book:</label>
+                    <input type="text" id="bookInputVerse" placeholder="e.g., John" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-200">
+                </div>
+                <div>
+                    <label for="chapterInputVerse" class="block text-sm font-medium text-gray-700 mb-2">Chapter:</label>
+                    <input type="number" id="chapterInputVerse" placeholder="e.g., 3" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-200">
+                </div>
+                <div>
+                    <label for="startVerseInput" class="block text-sm font-medium text-gray-700 mb-2">Start Verse:</label>
+                    <input type="number" id="startVerseInput" placeholder="e.g., 16" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-200">
+                </div>
+                <div>
+                    <label for="endVerseInput" class="block text-sm font-medium text-gray-700 mb-2">End Verse (Optional):</label>
+                    <input type="number" id="endVerseInput" placeholder="e.g., 17" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-200">
+                </div>
+            </div>
+            <button id="lookupVersesBtn" class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700 transition duration-300 shadow-md">
+                Look Up Verse(s)
+            </button>
+        </div>
+
+        <div id="chapterDisplay" class="bg-white p-6 md:p-8 rounded-xl shadow-lg w-full max-w-3xl mb-8 border border-blue-200">
+            <h2 class="text-2xl font-semibold text-blue-700 mb-4 text-center" id="chapterReference">Welcome to The Holy Bible</h2>
+            <div class="text-lg leading-relaxed text-gray-700 text-center" id="chapterContent">
+                <p>Select a Bible version, book, and chapter above to start reading.</p>
+                <p>For example, try "John" chapter "3" with the "King James Version".</p>
+            </div>
+        </div>
+
+        <div id="verseLookupDisplay" class="bg-white p-6 md:p-8 rounded-xl shadow-lg w-full max-w-3xl border border-blue-200 hidden">
+            <h2 class="text-2xl font-semibold text-blue-700 mb-4 text-center" id="verseLookupReference"></h2>
+            <div class="text-lg leading-relaxed text-gray-700 text-center" id="verseLookupContent"></div>
+        </div>
+
+        <div id="messageBox" class="fixed bottom-4 right-4 bg-red-500 text-white p-4 rounded-lg shadow-xl hidden z-50">
+            <p id="messageText"></p>
+            <button class="absolute top-1 right-2 text-white font-bold" onclick="document.getElementById('messageBox').classList.add('hidden')">&times;</button>
+        </div>
+
+    </main>
+
+    <footer class="bg-white shadow-inner py-4 px-6 md:px-8 lg:px-12 mt-8 rounded-t-xl">
+        <div class="container mx-auto text-center text-gray-600">
+            &copy; 2025 The Holy Bible Website. All rights reserved.
+        </div>
+    </footer>
+
+    <script type="module">
+        function showMessageBox(message) {
+            const messageBox = document.getElementById('messageBox');
+            const messageText = document.getElementById('messageText');
+            messageText.textContent = message;
+            messageBox.classList.remove('hidden');
+            setTimeout(() => {
+                messageBox.classList.add('hidden');
+            }, 3000);
+        }
+
+        const SCRIPTURE_API_KEY = '52ef41ae124e4b45df973fb96ebb6e1a';
+        let currentBooks = []; // Stores the list of books for the current Bible version
+        let currentChapters = []; // Stores the list of chapters for the current book
+
+        async function fetchBibleVersions() {
+            const bibleVersionSelect = document.getElementById('bibleVersionSelect');
+            const apiUrl = 'https://api.scripture.api.bible/v1/bibles';
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'GET',
+                    headers: {
+                        'api-key': SCRIPTURE_API_KEY,
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || `API error: ${response.status}`);
+                }
+
+                const result = await response.json();
+                const bibles = result.data;
+
+                bibleVersionSelect.innerHTML = '';
+
+                if (bibles && bibles.length > 0) {
+                    bibles.sort((a, b) => a.name.localeCompare(b.name));
+
+                    bibles.forEach(bible => {
+                        const option = document.createElement('option');
+                        option.value = bible.id;
+                        option.textContent = bible.name;
+                        if (bible.id === 'de4e12af7f28f599-01') { // KJV Bible ID
+                            option.selected = true;
+                        }
+                        bibleVersionSelect.appendChild(option);
+                    });
+                    // Initialize books for both sections
+                    fetchBooksForBible(bibleVersionSelect.value, 'chapter');
+                    fetchBooksForBible(bibleVersionSelect.value, 'verse'); // This will populate currentBookMap
+                } else {
+                    const option = document.createElement('option');
+                    option.value = '';
+                    option.textContent = 'No versions found';
+                    bibleVersionSelect.appendChild(option);
+                    showMessageBox("No Bible versions could be loaded.");
+                }
+            } catch (error) {
+                console.error("Error fetching Bible versions:", error);
+                const option = document.createElement('option');
+                option.value = '';
+                option.textContent = 'Error loading versions';
+                bibleVersionSelect.innerHTML = '';
+                bibleVersionSelect.appendChild(option);
+                showMessageBox(`Error loading Bible versions: ${error.message}`);
+            }
+        }
+
+        async function fetchBooksForBible(bibleId, section) {
+            const bookSelectChapter = document.getElementById('bookSelectChapter');
+            const chapterSelectChapter = document.getElementById('chapterSelectChapter');
+            const bookInputVerse = document.getElementById('bookInputVerse'); // This is an input, not a select
+
+            // Only clear and disable for the chapter section's dropdowns
+            if (section === 'chapter') {
+                bookSelectChapter.innerHTML = '<option value="">Loading books...</option>';
+                bookSelectChapter.disabled = true;
+                chapterSelectChapter.innerHTML = '<option value="">Select a book first</option>';
+                chapterSelectChapter.disabled = true;
+            }
+
+            if (!bibleId) return;
+
+            const apiUrl = `https://api.scripture.api.bible/v1/bibles/${bibleId}/books`;
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'GET',
+                    headers: {
+                        'api-key': SCRIPTURE_API_KEY,
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || `API error fetching books: ${response.status}`);
+                }
+
+                const result = await response.json();
+                currentBooks = result.data; // Store globally for both sections to use
+
+                // Populate bookSelectChapter for the chapter section
+                if (section === 'chapter') {
+                    bookSelectChapter.innerHTML = '<option value="">Select a book</option>';
+                    if (currentBooks && currentBooks.length > 0) {
+                        currentBooks.forEach(book => {
+                            const option = document.createElement('option');
+                            option.value = book.id;
+                            option.textContent = book.name;
+                            bookSelectChapter.appendChild(option);
+                        });
+                        bookSelectChapter.disabled = false;
+                    } else {
+                        bookSelectChapter.innerHTML = '<option value="">No books found</option>';
+                        showMessageBox("No books found for the selected Bible version.");
+                    }
+                }
+                // No specific population needed for bookInputVerse, it's a text input
+            } catch (error) {
+                console.error("Error fetching books for Bible:", error);
+                if (section === 'chapter') {
+                    bookSelectChapter.innerHTML = '<option value="">Error loading books</option>';
+                }
+                showMessageBox(`Error loading books for this version: ${error.message}`);
+            }
+        }
+
+        async function fetchChaptersForBook(bibleId, bookId, section) {
+            const chapterSelectChapter = document.getElementById('chapterSelectChapter');
+
+            if (section === 'chapter') {
+                chapterSelectChapter.innerHTML = '<option value="">Loading chapters...</option>';
+                chapterSelectChapter.disabled = true;
+            }
+
+            if (!bibleId || !bookId) return;
+
+            const apiUrl = `https://api.scripture.api.bible/v1/bibles/${bibleId}/books/${bookId}/chapters`;
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'GET',
+                    headers: {
+                        'api-key': SCRIPTURE_API_KEY,
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || `API error fetching chapters: ${response.status}`);
+                }
+
+                const result = await response.json();
+                currentChapters = result.data; // Store globally for both sections to use
+
+                if (section === 'chapter') {
+                    chapterSelectChapter.innerHTML = '<option value="">Select a chapter</option>';
+                    if (currentChapters && currentChapters.length > 0) {
+                        currentChapters.forEach(chapter => {
+                            if (chapter.number && chapter.number !== "0") {
+                                const option = document.createElement('option');
+                                option.value = chapter.id;
+                                option.textContent = `Chapter ${chapter.number}`;
+                                chapterSelectChapter.appendChild(option);
+                            }
+                        });
+                        chapterSelectChapter.disabled = false;
+                    } else {
+                        chapterSelectChapter.innerHTML = '<option value="">No chapters found</option>';
+                        showMessageBox("No chapters found for the selected book.");
+                    }
+                }
+            } catch (error) {
+                console.error("Error fetching chapters for book:", error);
+                if (section === 'chapter') {
+                    chapterSelectChapter.innerHTML = '<option value="">Error loading chapters</option>';
+                }
+                showMessageBox(`Error loading chapters for this book: ${error.message}`);
+            }
+        }
+
+        window.onload = fetchBibleVersions;
+
+        document.getElementById('bibleVersionSelect').addEventListener('change', (event) => {
+            const selectedBibleId = event.target.value;
+            fetchBooksForBible(selectedBibleId, 'chapter'); // Update for chapter section
+            // No need to call for verse section, as it uses input fields and currentBookMap
+        });
+
+        // Chapter Lookup Section Event Listeners
+        document.getElementById('bookSelectChapter').addEventListener('change', (event) => {
+            const selectedBibleId = document.getElementById('bibleVersionSelect').value;
+            const selectedBookId = event.target.value;
+            fetchChaptersForBook(selectedBibleId, selectedBookId, 'chapter');
+        });
+
+        document.getElementById('loadChapterBtn').addEventListener('click', async () => {
+            const bibleVersionSelect = document.getElementById('bibleVersionSelect');
+            const bookSelect = document.getElementById('bookSelectChapter');
+            const chapterSelect = document.getElementById('chapterSelectChapter');
+
+            const selectedBibleId = bibleVersionSelect.value;
+            const selectedBookId = bookSelect.value;
+            const selectedChapterId = chapterSelect.value;
+
+            const chapterReferenceElement = document.getElementById('chapterReference');
+            const chapterContentElement = document.getElementById('chapterContent');
+            const verseLookupDisplay = document.getElementById('verseLookupDisplay');
+
+            // Hide verse lookup display when loading a chapter
+            verseLookupDisplay.classList.add('hidden');
+
+            if (!selectedBibleId || !selectedBookId || !selectedChapterId) {
+                showMessageBox("Please select a Bible version, book, and chapter to load a full chapter.");
+                return;
+            }
+
+            const selectedBookName = bookSelect.options[bookSelect.selectedIndex].textContent;
+            const selectedChapterNumber = chapterSelect.options[chapterSelect.selectedIndex].textContent.replace('Chapter ', '');
+            const selectedBibleName = bibleVersionSelect.options[bibleVersionSelect.selectedIndex].textContent;
+
+            chapterReferenceElement.textContent = `Loading ${selectedBookName} Chapter ${selectedChapterNumber} (${selectedBibleName})...`;
+            chapterContentElement.innerHTML = "<p>Please wait...</p>";
+
+            try {
+                const chapterContentApiUrl = `https://api.scripture.api.bible/v1/bibles/${selectedBibleId}/chapters/${selectedChapterId}`;
+                const chapterContentResponse = await fetch(chapterContentApiUrl, {
+                    method: 'GET',
+                    headers: {
+                        'api-key': SCRIPTURE_API_KEY,
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (!chapterContentResponse.ok) {
+                    const errorData = await chapterContentResponse.json();
+                    throw new Error(errorData.message || `API error fetching chapter content: ${chapterContentResponse.status}`);
+                }
+
+                const chapterResult = await chapterContentResponse.json();
+
+                if (chapterResult.data && chapterResult.data.content) {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(chapterResult.data.content, 'text/html');
+
+                    doc.querySelectorAll('.footnote, .crossreference, .chapternum').forEach(el => el.remove());
+
+                    doc.querySelectorAll('.versenum').forEach(el => {
+                        el.outerHTML = `<span class="font-bold text-blue-700 mr-1">${el.textContent}</span>`;
+                    });
+
+                    chapterReferenceElement.textContent = `${chapterResult.data.reference}`;
+                    chapterContentElement.innerHTML = doc.body.innerHTML;
+
+                } else {
+                    chapterReferenceElement.textContent = "Chapter Not Found";
+                    chapterContentElement.innerHTML = "<p>The requested chapter could not be found. Please check your input.</p>";
+                    showMessageBox("Chapter not found. Please check book and chapter.");
+                }
+            } catch (error) {
+                console.error("Error loading chapter:", error);
+                chapterReferenceElement.textContent = "Error Loading Chapter";
+                chapterContentElement.innerHTML = "<p>There was an error loading the chapter. Please check your input or try again later.</p>";
+                showMessageBox(`Error: ${error.message}. Check console for details.`);
+            }
+        });
+
+        // Verse Lookup Section Event Listener
+        document.getElementById('lookupVersesBtn').addEventListener('click', async () => {
+            const bibleVersionSelect = document.getElementById('bibleVersionSelect');
+            const bookInputVerse = document.getElementById('bookInputVerse').value.trim();
+            const chapterInputVerse = document.getElementById('chapterInputVerse').value.trim();
+            const startVerseInput = document.getElementById('startVerseInput').value.trim();
+            const endVerseInput = document.getElementById('endVerseInput').value.trim();
+
+            const selectedBibleId = bibleVersionSelect.value;
+
+            const verseLookupReferenceElement = document.getElementById('verseLookupReference');
+            const verseLookupContentElement = document.getElementById('verseLookupContent');
+            const verseLookupDisplay = document.getElementById('verseLookupDisplay');
+            const chapterDisplay = document.getElementById('chapterDisplay');
+
+            // Hide chapter display when loading verses
+            chapterDisplay.classList.add('hidden');
+            verseLookupDisplay.classList.remove('hidden'); // Show verse lookup display
+
+            if (!selectedBibleId || !bookInputVerse || !chapterInputVerse || !startVerseInput) {
+                showMessageBox("Please select a Bible version and enter a book, chapter, and start verse for verse lookup.");
+                return;
+            }
+
+            const apiBookId = currentBooks.find(b => b.name.toLowerCase() === bookInputVerse.toLowerCase() || b.abbreviation?.toLowerCase() === bookInputVerse.toLowerCase())?.id;
+
+            if (!apiBookId) {
+                showMessageBox(`Book "${bookInputVerse}" not found or recognized for the selected Bible version.`);
+                verseLookupReferenceElement.textContent = "Book Not Found";
+                verseLookupContentElement.innerHTML = "<p>Please enter a valid book name or abbreviation.</p>";
+                return;
+            }
+
+            let verseIdString = `${apiBookId}.${chapterInputVerse}.${startVerseInput}`;
+            if (endVerseInput && parseInt(endVerseInput) > parseInt(startVerseInput)) {
+                verseIdString += `-${apiBookId}.${chapterInputVerse}.${endVerseInput}`;
+            }
+
+            verseLookupReferenceElement.textContent = `Loading ${bookInputVerse} ${chapterInputVerse}:${startVerseInput}${endVerseInput ? '-' + endVerseInput : ''} (${bibleVersionSelect.options[bibleVersionSelect.selectedIndex].text})...`;
+            verseLookupContentElement.innerHTML = "<p>Please wait...</p>";
+
+            try {
+                const verseApiUrl = `https://api.scripture.api.bible/v1/bibles/${selectedBibleId}/verses/${verseIdString}`;
+                const verseResponse = await fetch(verseApiUrl, {
+                    method: 'GET',
+                    headers: {
+                        'api-key': SCRIPTURE_API_KEY,
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (!verseResponse.ok) {
+                    const errorData = await verseResponse.json();
+                    throw new Error(errorData.message || `API error fetching verse(s): ${verseResponse.status}`);
+                }
+
+                const verseResult = await verseResponse.json();
+
+                if (verseResult.data && verseResult.data.content) {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(verseResult.data.content, 'text/html');
+
+                    doc.querySelectorAll('.footnote, .crossreference, .chapternum').forEach(el => el.remove());
+                     doc.querySelectorAll('.versenum').forEach(el => {
+                        el.outerHTML = `<span class="font-bold text-blue-700 mr-1">${el.textContent}</span>`;
+                    });
+
+                    verseLookupReferenceElement.textContent = `${verseResult.data.reference}`;
+                    verseLookupContentElement.innerHTML = doc.body.innerHTML;
+                } else {
+                    verseLookupReferenceElement.textContent = "Verse(s) Not Found";
+                    verseLookupContentElement.innerHTML = "<p>The requested verse(s) could not be found. Please check your input.</p>";
+                    showMessageBox("Verse(s) not found. Please check book, chapter, and verse(s).");
+                }
+            } catch (error) {
+                console.error("Error loading verse(s):", error);
+                verseLookupReferenceElement.textContent = "Error Loading Verse(s)";
+                verseLookupContentElement.innerHTML = "<p>There was an error loading the verse(s). Please check your input or try again later.</p>";
+                showMessageBox(`Error: ${error.message}. Check console for details.`);
+            }
+        });
+    </script>
+</body>
+</html>
