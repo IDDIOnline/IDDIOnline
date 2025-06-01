@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Iglesia de Dios Israelita</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Base Styles */
+        :root {
+            --color-primary: #2b6cb0; /* Stronger primary blue */
+            --color-primary-dark: #2c5282; /* Darker primary for hover */
+            --color-secondary-light: #ebf8ff; /* Light secondary blue */
+            --color-secondary-dark: #bfdbfe; /* Darker secondary for hover */
+            --color-text-dark: #1f2937; /* Very dark gray for main text */
+            --color-text-medium: #374151; /* Medium gray */
+            --color-text-light: #4b5563; /* Light gray */
+            --color-background-light: #fdfdfe; /* Almost white background */
+            --color-border-light: #e2e8f0; /* Light gray border */
+
+            /* Sidebar Colors */
+            --color-sidebar-bg: #1a365d; /* Darker blue for sidebar */
+            --color-sidebar-border: #2a4365; /* Slightly lighter sidebar border */
+            --color-sidebar-text: #c3dae8; /* Lighter blue for sidebar text */
+            --color-sidebar-icon: #90cdf4; /* Lighter blue for sidebar icons */
+
+            --color-focus-ring: rgba(66, 153, 225, 0.5); /* Blue focus ring */
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box; /* Global box-sizing */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            background-color: var(--color-background-light); /* Applied to body */
+            display: flex; /* Added to body for full height layout */
+            flex-direction: column; /* Added to body */
+            min-height: 100vh; /* Ensures body takes full viewport height */
+            color: var(--color-text-medium);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            line-height: 1.6; /* Improved readability */
+            font-size: 1rem; /* Base font size */
+        }
+
+        /* Main wrapper to handle content flex, if body itself is not the primary flex container */
+        .main-wrapper {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1; /* Allows this wrapper to grow and fill space if body has other direct children */
+        }
+
+
+        /* Page Transition CSS */
+        .page-content {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+            will-change: opacity, transform; /* Optimize for animation */
+        }
+        .page-content.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Specific Component Styles */
+        header {
+            border-bottom: 1px solid var(--color-border-light);
+            background-color: #fff; /* Tailwind: bg-white */
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); /* Tailwind: shadow-sm */
+        }
+
+        .header-button {
+            background-color: transparent;
+            border: none;
+            padding: 0;
+        }
+        .header-button .lucide-icon { 
+            color: var(--color-primary);
+        }
+
+        .sidebar {
+            background-color: var(--color-sidebar-bg); 
+            box-shadow: -4px 0 10px rgba(0, 0, 0, 0.2);
+        }
+        .sidebar-header {
+            border-color: var(--color-sidebar-border); 
+        }
+        .sidebar-title {
+            color: var(--color-sidebar-icon); 
+        }
+        .sidebar-close-button {
+            background-color: transparent;
+            border: none;
+        }
+        .sidebar-close-button .lucide-icon {
+            color: var(--color-sidebar-icon);
+        }
+        .sidebar-close-button:hover {
+            background-color: var(--color-sidebar-border); 
+        }
+
+        .sidebar-nav-link {
+            color: var(--color-sidebar-text); 
+        }
+        .sidebar-nav-link:hover {
+            background-color: var(--color-sidebar-border);
+            color: #fff; 
+        }
+        .sidebar-nav-link .lucide-icon {
+            color: var(--color-sidebar-icon);
+        }
+
+        .card {
+            background-color: #fff; 
+            border: 1px solid var(--color-border-light); 
+            border-radius: 0.75rem; 
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.04); 
+        }
+        .card img {
+            border-radius: 0.625rem; 
+        }
+
+        .primary-button {
+            background-color: var(--color-primary); 
+            color: #fff; 
+            padding: 0.75rem 1.5rem; 
+            border-radius: 0.5rem; 
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1); 
+            transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .primary-button:hover {
+            background-color: var(--color-primary-dark); 
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); 
+        }
+        .primary-button:active {
+            transform: translateY(0);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); 
+        }
+        .primary-button:focus {
+            box-shadow: 0 0 0 3px var(--color-focus-ring); 
+        }
+
+        .secondary-button {
+            background-color: var(--color-secondary-light); 
+            color: var(--color-primary); 
+            border: 1px solid var(--color-secondary-dark); 
+            padding: 0.75rem 1.5rem; 
+            border-radius: 0.5rem; 
+            transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .secondary-button:hover {
+            background-color: var(--color-secondary-dark); 
+            transform: translateY(-1px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08); 
+        }
+        .secondary-button:active {
+            transform: translateY(0);
+        }
+        .secondary-button:focus {
+            box-shadow: 0 0 0 3px var(--color-focus-ring);
+        }
+
+        .ghost-button {
+            color: var(--color-primary);
+            transition: background-color 0.2s ease;
+        }
+        .ghost-button:hover {
+            background-color: #f0f8ff; 
+        }
+        .ghost-button:focus {
+            box-shadow: 0 0 0 3px var(--color-focus-ring);
+        }
+
+        .input-field, .textarea-field {
+            border: 1px solid var(--color-border-light); 
+            border-radius: 0.5rem; 
+            padding: 0.75rem 1rem; 
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .input-field:focus, .textarea-field:focus {
+            border-color: var(--color-primary); 
+            box-shadow: 0 0 0 3px var(--color-focus-ring); 
+            outline: none;
+        }
+
+        .sermon-item {
+            border: 1px solid var(--color-border-light);
+            background-color: #fff;
+            border-radius: 0.625rem; 
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); 
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .sermon-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1); 
+        }
+
+        /* Image Slider Styles */
+        .slider-images img {
+            width: 100%;
+            flex-shrink: 0; 
+            object-fit: cover; 
+        }
+
+        #mainMessageBox {
+            position: fixed;
+            bottom: 1rem; 
+            right: 1rem; 
+            padding: 1rem; 
+            border-radius: 0.5rem; 
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05); 
+            z-index: 50; 
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none; /* Initially not interactive */
+        }
+        #mainMessageBox.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto; /* Interactive when shown */
+        }
+        #mainMessageBox.success {
+            background-color: #34d399; 
+            color: white;
+        }
+        #mainMessageBox.error {
+            background-color: #ef4444; 
+            color: white;
+        }
+        #mainMessageBox button {
+            position: absolute;
+            top: 0.25rem; 
+            right: 0.5rem; 
+            color: inherit;
+            font-weight: bold;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.25rem;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body class="bg-blue-50"> 
+    <div class="main-wrapper"> <header class="bg-white shadow-sm border-b border-blue-100 p-4 flex items-center justify-between sticky top-0 z-20">
+            <h1 class="text-xl font-bold text-blue-800">La Iglesia de Dios Israelita</h1>
+            <button id="menu-toggle-button" class="ghost-button h-10 w-10 flex items-center justify-center rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-200 cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-icon h-6 w-6 text-blue-700">
+                    <line x1="4" x2="20" y1="12" y2="12"></line>
+                    <line x1="4" x2="20" y1="6" y2="6"></line>
+                    <line x1="4" x2="20" y1="18" y2="18"></line>
+                </svg>
+            </button>
+        </header>
+
+        <main id="main-content" class="flex-1 p-4 overflow-y-auto">
+            <div id="home-page" class="page-content">
+                <div class="text-center p-6 bg-white rounded-xl shadow-lg card">
+                    <img src="https://placehold.co/600x300/e0f2f7/01579b?text=Bienvenido" alt="Welcome Banner" class="w-full rounded-lg mb-6 shadow-sm" onerror="this.onerror=null;this.src='https://placehold.co/600x300/CCCCCC/666666?text=Image+Error';" />
+                    <h2 class="text-3xl font-bold text-blue-800 mb-4">¡Bienvenidos a Nuestra Iglesia!</h2>
+                    <p class="text-gray-700 text-lg mb-4">
+                        Nos complace que nos visite. Aquí encontrará un lugar de paz, fe y comunidad.
+                    </p>
+                    <p class="text-gray-600 text-base">
+                        Nuestra misión es difundir la palabra de Dios y servir a nuestra comunidad con amor y dedicación.
+                    </p>
+                    <div class="flex justify-center mt-6">
+                        <button class="primary-button flex items-center justify-center cursor-pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-icon h-4 w-4 mr-2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polygon points="10 8 16 12 10 16 10 8"></polygon>
+                            </svg>
+                            Ver Servicio en Vivo
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="about-page" class="page-content hidden">
+                <div class="p-6 bg-white rounded-xl shadow-lg card">
+                    <h2 class="text-2xl font-bold text-blue-800 mb-4">Acerca de Nosotros</h2>
+                    <p class="text-gray-700 mb-4">
+                        La Iglesia de Dios Israelita tiene una rica historia de fe y servicio. Fundada en principios bíblicos,
+                        nuestra congregación se ha dedicado a la enseñanza de la palabra de Dios y al apoyo mutuo entre sus miembros.
+                    </p>
+                    <p class="text-gray-700 mb-4">
+                        Creemos firmemente en el poder de la oración, la importancia de la comunidad y la guía de las escrituras.
+                        Nuestros valores fundamentales incluyen el amor, la compasión, la justicia y la humildad.
+                    </p>
+                    <p class="text-gray-700">
+                        Invitamos a todos a unirse a nosotros en el camino de la fe y a experimentar la gracia de Dios.
+                    </p>
+
+                    <div class="mt-8">
+                        <h3 class="text-xl font-semibold text-blue-700 mb-4 text-center">Galería</h3>
+                        <div
+                            id="slider-container"
+                            class="relative w-full md:w-4/5 lg:w-2/3 mx-auto bg-white rounded-xl shadow-lg overflow-hidden
+                                   hover:shadow-xl transition-shadow duration-300 ease-in-out"
+                        >
+                            <div id="slider-images" class="flex transition-transform duration-500 ease-in-out">
+                                <img src="https://scontent-ord5-3.xx.fbcdn.net/v/t39.30808-6/482068061_681783227846233_6505843607583388327_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=127cfc&_nc_ohc=A0rPSA7zuC8Q7kNvwFAx3vT&_nc_oc=Adm5FFjF9PUL3wWNz2k2yEQ4a4wajDmfMNMkFT0e78S_hcB1Ma81ZceKzv4GLOoa8DA&_nc_zt=23&_nc_ht=scontent-ord5-3.xx&_nc_gid=2n9Xt068BIU0_j9uSy5aQA&oh=00_AfJJVSGmtM5kGisCbXwI6l586kiP04u2eu42ImiudfDw1Q&oe=6841D467" alt="Slide 1"
+                                     class="w-full flex-shrink-0 object-cover rounded-xl"
+                                     onerror="this.onerror=null;this.src='https://placehold.co/800x450/CCCCCC/666666?text=Image+Error';" />
+                                <img src="https://scontent-ord5-3.xx.fbcdn.net/v/t39.30808-6/485145768_1092813809547352_1485650446715542739_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=f727a1&_nc_ohc=fxvxN6-ufH0Q7kNvwFhEgr-&_nc_oc=AdkWMS7a4aJ25XMV6CI8Ub01Wx9a1cdPfpO4Ka-UXhH3jjwqP-4Xl-VOOCpyZiSBj7o&nc_zt=23&_nc_ht=scontent-ord5-3.xx&_nc_gid=Cdgh411RXto8fYeUE6Iwzg&oh=00_AfJkGawyosOuBoDIQLwmRzUD-p8pfcMPyJ6dAJEe2RldqA&oe=6841F122" alt="Slide 2"
+                                     class="w-full flex-shrink-0 object-cover rounded-xl"
+                                     onerror="this.onerror=null;this.src='https://placehold.co/800x450/CCCCCC/666666?text=Image+Error';" />
+                                <img src="https://scontent-ord5-2.xx.fbcdn.net/v/t39.30808-6/465450171_9311590395546266_4699851194046170707_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=cf85f3&_nc_ohc=Nv9prDhmH8sQ7kNvwFlvZsg&_nc_oc=AdlzokcDSKeUG2wHjnAP6uaVxczxuwy0-yq6Sk2oXjosXh7T0YumEcUToIRA0Q9Zo2c&nc_zt=23&_nc_ht=scontent-ord5-2.xx&_nc_gid=9qE6JRF422_z-d1nCaDETg&oh=00_AfKu22zTx-kvYXnvVqy4AjVZmXG2AH3uJJbEJm314YlFpw&oe=6841EB4C" alt="Slide 3"
+                                     class="w-full flex-shrink-0 object-cover rounded-xl"
+                                     onerror="this.onerror=null;this.src='https://placehold.co/800x450/CCCCCC/666666?text=Image+Error';" />
+                                <img src="https://scontent-ord5-1.xx.fbcdn.net/v/t39.30808-6/465231298_9311453955559910_3484166220115580374_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=cf85f3&_nc_ohc=2BhE6w2-Ij4Q7kNvwGyq4Ks&_nc_oc=AdmUPgoA7hh97x-uMzybdob5ANLFoiWGqYCL_hdCGlFp_TFRgim6nQbuMu9ixfHqB4I&nc_zt=23&_nc_ht=scontent-ord5-1.xx&_nc_gid=WUUPBts8E7xnBi-oKAamTQ&oh=00_AfIyOtb7WW-AdhkuvSIPBgWyNEuEYTcjKvUYmkLbcU6c2A&oe=6841EC49" alt="Slide 4"
+                                     class="w-full flex-shrink-0 object-cover rounded-xl"
+                                     onerror="this.onerror=null;this.src='https://placehold.co/800x450/CCCCCC/666666?text=Image+Error';" />
+                                <img src="https://scontent-ord5-3.xx.fbcdn.net/v/t1.6435-9/42465233_1884903408261109_2868740314925891584_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=833d8c&_nc_ohc=r5U1nAUYLFUQ7kNvwEfmMNa&_nc_oc=AdmmBUR7sBjYsRuuc2Et5_gZqnGZXHGqwwk1kFJffi5pt8IvWEG_M6Ad_tV5JNo6V6Q&nc_zt=23&_nc_ht=scontent-ord5-3.xx&_nc_gid=jowMo4knkqFHYaopkoXG8A&oh=00_AfKRwIX2m_ZiiYGCvzcaJgOlXAnRbvXhmyhKzh4j75hPFQ&oe=68639A5D" alt="Slide 5"
+                                     class="w-full flex-shrink-0 object-cover rounded-xl"
+                                     onerror="this.onerror=null;this.src='https://placehold.co/800x450/CCCCCC/666666?text=Image+Error';" />
+                                <img src="https://scontent-ord5-3.xx.fbcdn.net/v/t39.30808-6/500780163_1148456883983044_5268337824696854206_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=127cfc&_nc_ohc=ZLhs54C_ucIQ7kNvwHB9w7o&_nc_oc=AdmFgxHiW6u5RnFnt_K-jxHE38MLv2mrVLFoKdfaQ0ZgxIUKiIp4Txix0zY1JCOplxQ&nc_zt=23&_nc_ht=scontent-ord5-3.xx&_nc_gid=_JAbu9Es1Iqwb-gw7BYTZw&oh=00_AfJqAW9KsYZhLQUfrqzeQWYM99VQvQD_uK173HP6raP1zQ&oe=6841CED7" alt="Slide 6"
+                                     class="w-full flex-shrink-0 object-cover rounded-xl"
+                                     onerror="this.onerror=null;this.src='https://placehold.co/800x450/CCCCCC/666666?text=Image+Error';" />
+                                <img src="https://scontent-ord5-3.xx.fbcdn.net/v/t39.30808-6/485833912_1098559985639401_2614873029103859240_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=f727a1&_nc_ohc=Ucy2zCc4ikEQ7kNvwFWxIpr&_nc_oc=AdkjjGJ-Dxg6k2VJP6oNBsCpje9V5l2XYCJh4AdIrGEUtUVnmmy2JbYOAdcQOv8Zmv0&nc_zt=23&_nc_ht=scontent-ord5-3.xx&_nc_gid=XVGHQ5Xco1nDc7jl5wI2sw&oh=00_AfK-SCcbUWI1nBOdV6RfxcfhVzWCM4sh_T0wnP9nP7NQpQ&oe=6841FB72" alt="Slide 7"
+                                     class="w-full flex-shrink-0 object-cover rounded-xl"
+                                     onerror="this.onerror=null;this.src='https://placehold.co/800x450/CCCCCC/666666?text=Image+Error';" />
+                                <img src="https://scontent-ord5-3.xx.fbcdn.net/v/t39.30808-6/486743692_1098559635639436_3472729707717691457_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=f727a1&_nc_ohc=CrFa0Yd8k-gQ7kNvwEvLicK&_nc_oc=Adkeg0Qc5U6ZITpPXBqcvrM2hp-ZOEX11tY62f2tQu4PPTTQd84ZT0pSJNK-5B-_Ty4&nc_zt=23&_nc_ht=scontent-ord5-3.xx&_nc_gid=dPGjgIMCM_7zVDMEVqmAvw&oh=00_AfJah8uUIbiVMiEJe8S45ThVF5I530XrsSVG1O_42LH3zw&oe=6841E9B1" alt="Slide 8"
+                                     class="w-full flex-shrink-0 object-cover rounded-xl"
+                                     onerror="this.onerror=null;this.src='https://placehold.co/800x450/CCCCCC/666666?text=Image+Error';" />
+                            </div>
+
+                            <button
+                                id="prev-btn"
+                                class="absolute top-1/2 left-2 md:left-4 transform -translate-y-1/2
+                                       bg-black bg-opacity-50 text-white p-2 md:p-3 rounded-full
+                                       hover:bg-opacity-75 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-75
+                                       transition-colors duration-200 ease-in-out shadow-md"
+                                aria-label="Previous slide"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                                </svg>
+                            </button>
+
+                            <button
+                                id="next-btn"
+                                class="absolute top-1/2 right-2 md:right-4 transform -translate-y-1/2
+                                       bg-black bg-opacity-50 text-white p-2 md:p-3 rounded-full
+                                       hover:bg-opacity-75 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-75
+                                       transition-colors duration-200 ease-in-out shadow-md"
+                                aria-label="Next slide"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </button>
+
+                            <div id="dots-container" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="sermons-page" class="page-content hidden">
+                <div class="p-6 bg-white rounded-xl shadow-lg card">
+                    <h2 class="text-2xl font-bold text-blue-800 mb-4">Sermones</h2>
+                    <p class="text-gray-700 mb-6">Escuche y aprenda de nuestros sermones pasados.</p>
+                    <ul class="space-y-4" id="sermons-list">
+                        </ul>
+                </div>
+            </div>
+
+            <div id="bible-page" class="page-content hidden">
+                <div class="p-6 bg-white rounded-xl shadow-lg card">
+                    <header class="bg-white py-4 px-0 rounded-b-xl mb-6"> 
+                        <div class="container mx-auto flex flex-col md:flex-row items-center justify-between">
+                            <h1 class="text-3xl font-extrabold text-blue-700 mb-2 md:mb-0">
+                                La Santa Biblia
+                            </h1>
+                        </div>
+                    </header>
+
+                    <main class="flex-grow container mx-auto p-0 flex flex-col items-center"> 
+                        <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg w-full max-w-2xl mb-8 border border-blue-200">
+                            <label for="bibleVersionSelect" class="block text-sm font-medium text-gray-700 mb-2">Seleccionar Versión de la Biblia:</label>
+                            <select id="bibleVersionSelect" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-200">
+                                <option value="">Cargando versiones...</option>
+                            </select>
+                        </div>
+
+                        <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg w-full max-w-2xl mb-8 border border-blue-200">
+                            <h2 class="text-2xl font-semibold text-blue-700 mb-4 text-center">Cargar Capítulo Completo</h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label for="bookSelectChapter" class="block text-sm font-medium text-gray-700 mb-2">Seleccionar Libro:</label>
+                                    <select id="bookSelectChapter" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-200">
+                                        <option value="">Seleccionar un libro</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="chapterSelectChapter" class="block text-sm font-medium text-gray-700 mb-2">Seleccionar Capítulo:</label>
+                                    <select id="chapterSelectChapter" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-200" disabled>
+                                        <option value="">Seleccionar un libro primero</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button id="loadChapterBtn" class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700 transition duration-300 shadow-md">
+                                Cargar Capítulo
+                            </button>
+                        </div>
+
+                        <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg w-full max-w-2xl mb-8 border border-blue-200">
+                            <h2 class="text-2xl font-semibold text-blue-700 mb-4 text-center">Buscar Versículo(s)</h2>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                                <div>
+                                    <label for="bookInputVerse" class="block text-sm font-medium text-gray-700 mb-2">Libro:</label>
+                                    <input type="text" id="bookInputVerse" placeholder="ej., Juan" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-200">
+                                </div>
+                                <div>
+                                    <label for="chapterInputVerse" class="block text-sm font-medium text-gray-700 mb-2">Capítulo:</label>
+                                    <input type="number" id="chapterInputVerse" placeholder="ej., 3" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-200">
+                                </div>
+                                <div>
+                                    <label for="startVerseInput" class="block text-sm font-medium text-gray-700 mb-2">Versículo Inicial:</label>
+                                    <input type="number" id="startVerseInput" placeholder="ej., 16" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-200">
+                                </div>
+                                <div>
+                                    <label for="endVerseInput" class="block text-sm font-medium text-gray-700 mb-2">Versículo Final (Opcional):</label>
+                                    <input type="number" id="endVerseInput" placeholder="ej., 17" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-200">
+                                </div>
+                            </div>
+                            <button id="lookupVersesBtn" class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700 transition duration-300 shadow-md">
+                                Buscar Versículo(s)
+                            </button>
+                        </div>
+
+                        <div id="chapterDisplay" class="bg-white p-6 md:p-8 rounded-xl shadow-lg w-full max-w-3xl mb-8 border border-blue-200">
+                            <h2 class="text-2xl font-semibold text-blue-700 mb-4 text-center" id="chapterReference">Bienvenido a La Santa Biblia</h2>
+                            <div class="text-lg leading-relaxed text-gray-700 text-center" id="chapterContent">
+                                <p>Selecciona una versión de la Biblia, libro y capítulo arriba para empezar a leer.</p>
+                                <p>Por ejemplo, prueba "Juan" capítulo "3" con la "Versión Reina-Valera".</p>
+                            </div>
+                        </div>
+
+                        <div id="verseLookupDisplay" class="bg-white p-6 md:p-8 rounded-xl shadow-lg w-full max-w-3xl border border-blue-200 hidden">
+                            <h2 class="text-2xl font-semibold text-blue-700 mb-4 text-center" id="verseLookupReference"></h2>
+                            <div class="text-lg leading-relaxed text-gray-700 text-center" id="verseLookupContent"></div>
+                        </div>
+
+                        <div id="bibleMessageBox" class="fixed bottom-4 right-4 bg-red-500 text-white p-4 rounded-lg shadow-xl hidden z-50">
+                            <p id="bibleMessageText"></p>
+                            <button class="absolute top-1 right-2 text-white font-bold" onclick="document.getElementById('bibleMessageBox').classList.add('hidden')">&times;</button>
+                        </div>
+                    </main>
+                </div>
+            </div>
+
+            <div id="contact-page" class="page-content hidden">
+                <div class="p-6 bg-white rounded-xl shadow-lg card">
+                    <h2 class="text-2xl font-bold text-blue-800 mb-4">Contacto</h2>
+                    <p class="text-gray-700 mb-4">
+                        Estamos aquí para servirle. No dude en ponerse en contacto con nosotros para cualquier pregunta o necesidad.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-center text-gray-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-icon h-5 w-5 mr-3 text-blue-700">
+                                <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                            </svg>
+                            <span>info@laiglesiadediosisraelita.online</span>
+                        </div>
+                        <div class="flex items-center text-gray-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-icon h-5 w-5 mr-3 text-blue-700">
+                                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                            </svg>
+                            <span>[Dirección de la Iglesia, Ciudad, País]</span>
+                        </div>
+                    </div>
+                    <form id="contact-form" class="mt-6 space-y-4">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700">Nombre</label>
+                            <input type="text" id="name" name="name" class="input-field mt-1 block w-full shadow-sm" required />
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700">Correo Electrónico</label>
+                            <input type="email" id="email" name="email" class="input-field mt-1 block w-full shadow-sm" required />
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-700">Mensaje</label>
+                            <textarea id="message" name="message" rows="4" class="textarea-field mt-1 block w-full shadow-sm" required></textarea>
+                        </div>
+                        <button type="submit" class="primary-button flex items-center justify-center cursor-pointer">
+                            Enviar Mensaje
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </main>
+
+        <aside id="sidebar" class="fixed inset-y-0 right-0 z-40 w-64 bg-blue-800 text-white transform translate-x-full transition-transform duration-300 ease-in-out">
+            <div class="p-4 border-b border-blue-700 flex items-center justify-between sidebar-header">
+                <h2 class="text-xl font-semibold text-blue-300 sidebar-title">Menú</h2>
+                <button id="sidebar-close-button" class="ghost-button h-10 w-10 flex items-center justify-center rounded-md text-blue-300 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-200 cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-icon h-6 w-6">
+                        <line x1="18" x2="6" y1="6" y2="18"></line>
+                        <line x1="6" x2="18" y1="6" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <nav class="mt-5">
+                <ul>
+                    <li>
+                        <a href="#" class="sidebar-nav-link flex items-center py-3 px-4 transition-colors duration-200" data-page="home">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-icon h-5 w-5 mr-3 text-blue-400">
+                                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                            </svg>
+                            <span>Inicio</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-icon h-5 w-5 ml-auto text-blue-400">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="sidebar-nav-link flex items-center py-3 px-4 transition-colors duration-200" data-page="about">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-icon h-6 w-6 mr-3 text-blue-400">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M12 16v-4"></path>
+                                <path d="M12 8h.01"></path>
+                            </svg>
+                            <span>Acerca de Nosotros</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-icon h-5 w-5 ml-auto text-blue-400">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="sidebar-nav-link flex items-center py-3 px-4 transition-colors duration-200" data-page="sermons">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-icon h-5 w-5 mr-3 text-blue-400">
+                                <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path> 
+                            </svg>
+                            <span>Sermones</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-icon h-5 w-5 ml-auto text-blue-400">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="sidebar-nav-link flex items-center py-3 px-4 transition-colors duration-200" data-page="bible">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-icon h-5 w-5 mr-3 text-blue-400">
+                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path> 
+                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                            </svg>
+                            <span>Biblia</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-icon h-5 w-5 ml-auto text-blue-400">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="sidebar-nav-link flex items-center py-3 px-4 transition-colors duration-200" data-page="contact">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-icon h-5 w-5 mr-3 text-blue-400">
+                                <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                            </svg>
+                            <span>Contacto</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-icon h-5 w-5 ml-auto text-blue-400">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-30 hidden"></div> 
+        
+        <div id="mainMessageBoxContainer">
+            <div id="mainMessageBox" class="">
+                <p id="mainMessageText"></p>
+                <button onclick="this.parentElement.classList.remove('show')">&times;</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Main Page Script
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuToggleButton = document.getElementById('menu-toggle-button');
+            const sidebar = document.getElementById('sidebar');
+            const sidebarCloseButton = document.getElementById('sidebar-close-button');
+            const sidebarOverlay = document.getElementById('sidebar-overlay');
+            const navLinks = document.querySelectorAll('.sidebar-nav-link');
+            const pageContents = document.querySelectorAll('.page-content');
+            const mainContent = document.getElementById('main-content');
+
+            const sermonsData = [
+                { id: 1, title: 'La Importancia de la Fe', speaker: 'Pastor Juan Pérez', date: '2023-10-29' },
+                { id: 2, title: 'El Amor Incondicional de Dios', speaker: 'Hermana María García', date: '2023-10-22' },
+                { id: 3, title: 'Viviendo en Gracia', speaker: 'Pastor Juan Pérez', date: '2023-10-15' },
+            ];
+
+            let isSidebarOpen = false;
+            let currentPageElement = null;
+
+            function toggleSidebar() {
+                isSidebarOpen = !isSidebarOpen;
+                if (isSidebarOpen) {
+                    sidebar.classList.remove('translate-x-full');
+                    sidebar.classList.add('translate-x-0');
+                    sidebarOverlay.classList.remove('hidden');
+                } else {
+                    sidebar.classList.remove('translate-x-0');
+                    sidebar.classList.add('translate-x-full');
+                    sidebarOverlay.classList.add('hidden');
+                }
+            }
+            
+            function showMainMessage(message, type = 'success', duration = 3000) {
+                const messageBox = document.getElementById('mainMessageBox');
+                const messageText = document.getElementById('mainMessageText');
+                
+                if (!messageBox || !messageText) {
+                    console.warn("Main message box elements not found.");
+                    return;
+                }
+                
+                messageText.textContent = message;
+                messageBox.className = ''; 
+                messageBox.classList.add(type); 
+                messageBox.classList.add('show');
+
+                setTimeout(() => {
+                    messageBox.classList.remove('show');
+                }, duration);
+            }
+
+
+            function showPage(pageId) {
+                const targetPageElement = document.getElementById(`${pageId}-page`);
+
+                if (currentPageElement === targetPageElement) {
+                    // If on mobile and sidebar is open, close it even if clicking current page link
+                    if (window.innerWidth < 768 && isSidebarOpen) {
+                         toggleSidebar();
+                    }
+                    return;
+                }
+
+                if (currentPageElement) {
+                    currentPageElement.classList.remove('active');
+                    setTimeout(() => {
+                        if (currentPageElement !== targetPageElement) { 
+                           currentPageElement.classList.add('hidden');
+                        }
+                    }, 300); 
+                }
+
+                if (targetPageElement) {
+                    pageContents.forEach(page => {
+                        if (page !== targetPageElement) { 
+                            page.classList.add('hidden');
+                            page.classList.remove('active');
+                        }
+                    });
+                    targetPageElement.classList.remove('hidden');
+                    void targetPageElement.offsetWidth; 
+                    targetPageElement.classList.add('active');
+                    currentPageElement = targetPageElement;
+                }
+                if (mainContent) {
+                    mainContent.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+                // Always close sidebar after navigation, regardless of screen width
+                if (isSidebarOpen) {
+                     toggleSidebar();
+                }
+            }
+
+            function renderSermons() {
+                const sermonsList = document.getElementById('sermons-list');
+                if (sermonsList) {
+                    sermonsList.innerHTML = '';
+                    sermonsData.forEach(sermon => {
+                        const li = document.createElement('li');
+                        li.className = 'border border-blue-100 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between bg-white sermon-item space-y-2 sm:space-y-0';
+                        li.innerHTML = `
+                            <div class="flex-grow">
+                                <h3 class="text-lg font-semibold text-blue-800">${sermon.title}</h3>
+                                <p class="text-sm text-gray-600">Por: ${sermon.speaker} | ${sermon.date}</p>
+                            </div>
+                            <button class="primary-button h-8 px-3 text-sm flex items-center justify-center cursor-pointer w-full sm:w-auto mt-2 sm:mt-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-icon h-4 w-4 mr-2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polygon points="10 8 16 12 10 16 10 8"></polygon>
+                                </svg>
+                                Escuchar
+                            </button>
+                        `;
+                        sermonsList.appendChild(li);
+                    });
+                }
+            }
+            
+            // Add event listeners only if elements exist
+            if (menuToggleButton) menuToggleButton.addEventListener('click', toggleSidebar);
+            if (sidebarCloseButton) sidebarCloseButton.addEventListener('click', toggleSidebar);
+            if (sidebarOverlay) sidebarOverlay.addEventListener('click', toggleSidebar);
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    const page = event.currentTarget.dataset.page;
+                    showPage(page);
+                });
+            });
+
+            const contactForm = document.getElementById('contact-form');
+            if (contactForm) {
+                contactForm.addEventListener('submit', (event) => {
+                    event.preventDefault();
+                    const name = document.getElementById('name').value;
+                    const email = document.getElementById('email').value;
+                    const message = document.getElementById('message').value;
+
+                    if(name && email && message) {
+                        console.log('Contact Form Submitted:', { name, email, message });
+                        showMainMessage('Mensaje enviado. ¡Gracias por contactarnos!', 'success');
+                        contactForm.reset();
+                    } else {
+                        showMainMessage('Por favor, complete todos los campos.', 'error');
+                    }
+                });
+            }
+            
+            const initialPage = 'home'; 
+            const homePageElement = document.getElementById(`${initialPage}-page`);
+            if (homePageElement) {
+                pageContents.forEach(page => page.classList.add('hidden')); 
+                homePageElement.classList.remove('hidden');
+                homePageElement.classList.add('active'); 
+                currentPageElement = homePageElement;
+            } else {
+                 // Fallback if home page element isn't found, activate first page content
+                const firstPage = document.querySelector('.page-content');
+                if (firstPage) {
+                    pageContents.forEach(page => page.classList.add('hidden'));
+                    firstPage.classList.remove('hidden');
+                    firstPage.classList.add('active');
+                    currentPageElement = firstPage;
+                }
+            }
+            renderSermons();
+
+            const sliderContainer = document.getElementById('slider-container');
+            if (sliderContainer) { 
+                const sliderImages = document.getElementById('slider-images');
+                const images = sliderImages.querySelectorAll('img');
+                const prevBtn = document.getElementById('prev-btn');
+                const nextBtn = document.getElementById('next-btn');
+                const dotsContainer = document.getElementById('dots-container');
+
+                let currentIndex = 0;
+                const totalImages = images.length;
+                let autoSlideInterval;
+
+                if (dotsContainer) dotsContainer.innerHTML = '';
+                if (totalImages > 0 && dotsContainer) {
+                    for (let i = 0; i < totalImages; i++) {
+                        const dot = document.createElement('button');
+                        dot.classList.add('h-2', 'w-2', 'md:h-3', 'md:w-3', 'rounded-full', 'transition-colors', 'duration-200', 'ease-in-out',
+                                          'focus:outline-none', 'focus:ring-2', 'focus:ring-white', 'focus:ring-opacity-75');
+                        dot.setAttribute('data-index', i);
+                        dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+                        dotsContainer.appendChild(dot);
+                    }
+                }
+                const dots = dotsContainer ? dotsContainer.querySelectorAll('button') : [];
+
+                function updateSlider() {
+                    if (!sliderImages || dots.length === 0 && totalImages > 0) return; 
+                    sliderImages.style.transform = `translateX(-${currentIndex * 100}%)`;
+                    dots.forEach((dot, index) => {
+                        if (index === currentIndex) {
+                            dot.classList.add('bg-white');
+                            dot.classList.remove('bg-gray-400', 'bg-opacity-75');
+                        } else {
+                            dot.classList.remove('bg-white');
+                            dot.classList.add('bg-gray-400', 'bg-opacity-75');
+                        }
+                    });
+                }
+
+                function goToNextSlide() {
+                    currentIndex = (currentIndex + 1) % totalImages;
+                    updateSlider();
+                }
+
+                function goToPrevSlide() {
+                    currentIndex = (currentIndex - 1 + totalImages) % totalImages;
+                    updateSlider();
+                }
+
+                function startAutoSlide() {
+                    stopAutoSlide();
+                    if (totalImages > 1) { // Only start auto slide if there's more than one image
+                        autoSlideInterval = setInterval(goToNextSlide, 3000);
+                    }
+                }
+
+                function stopAutoSlide() {
+                    if (autoSlideInterval) {
+                        clearInterval(autoSlideInterval);
+                        autoSlideInterval = null;
+                    }
+                }
+
+                if (nextBtn) nextBtn.addEventListener('click', () => { stopAutoSlide(); goToNextSlide(); startAutoSlide(); });
+                if (prevBtn) prevBtn.addEventListener('click', () => { stopAutoSlide(); goToPrevSlide(); startAutoSlide(); });
+
+                dots.forEach(dot => {
+                    dot.addEventListener('click', (event) => {
+                        stopAutoSlide();
+                        currentIndex = parseInt(event.target.getAttribute('data-index'));
+                        updateSlider();
+                        startAutoSlide();
+                    });
+                });
+
+                sliderContainer.addEventListener('mouseenter', stopAutoSlide);
+                sliderContainer.addEventListener('mouseleave', startAutoSlide);
+
+                if (images.length > 0) { 
+                    updateSlider();
+                    startAutoSlide();
+                }
+            }
+        });
+
+        // Bible API Script (Module)
+        function showBibleMessageBox(message, isError = true) { 
+            const messageBox = document.getElementById('bibleMessageBox');
+            const messageText = document.getElementById('bibleMessageText');
+            if (!messageBox || !messageText) return;
+
+            messageText.textContent = message;
+            messageBox.classList.remove('hidden');
+            messageBox.classList.toggle('bg-red-500', isError); 
+            messageBox.classList.toggle('bg-green-500', !isError); 
+
+            setTimeout(() => {
+                messageBox.classList.add('hidden');
+            }, 3000);
+        }
+
+        const SCRIPTURE_API_KEY = '77d6e18f041437e25b504841f8850bb2'; 
+        let currentBooks = [];
+        
+        async function fetchBibleVersions() {
+            const bibleVersionSelect = document.getElementById('bibleVersionSelect');
+            if (!bibleVersionSelect) return;
+            const apiUrl = 'https://api.scripture.api.bible/v1/bibles';
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'GET',
+                    headers: { 'api-key': SCRIPTURE_API_KEY, 'Accept': 'application/json' }
+                });
+                if (!response.ok) { 
+                    const errorData = await response.json().catch(() => ({ message: `API error: ${response.status}` }));
+                    throw new Error(errorData.message || `API error: ${response.status}`);
+                }
+                const result = await response.json();
+                bibleVersionSelect.innerHTML = '';
+                if (result.data && result.data.length > 0) {
+                    result.data.sort((a, b) => a.name.localeCompare(b.name)).forEach(bible => {
+                        const option = document.createElement('option');
+                        option.value = bible.id;
+                        option.textContent = bible.name;
+                        if (bible.id === 'de4e12af7f28f599-01') option.selected = true; 
+                        bibleVersionSelect.appendChild(option);
+                    });
+                    if (bibleVersionSelect.value) { // Ensure a version is selected before fetching books
+                        fetchBooksForBible(bibleVersionSelect.value); 
+                    }
+                } else {
+                    bibleVersionSelect.innerHTML = '<option value="">No se encontraron versiones</option>';
+                    showBibleMessageBox("No se pudieron cargar versiones de la Biblia.");
+                }
+            } catch (error) {
+                console.error("Error fetching Bible versions:", error);
+                if (bibleVersionSelect) bibleVersionSelect.innerHTML = '<option value="">Error al cargar</option>';
+                showBibleMessageBox(`Error al cargar versiones: ${error.message}`);
+            }
+        }
+
+        async function fetchBooksForBible(bibleId) {
+            const bookSelectChapter = document.getElementById('bookSelectChapter');
+            const chapterSelectChapter = document.getElementById('chapterSelectChapter');
+            if (!bookSelectChapter || !chapterSelectChapter) return;
+
+            bookSelectChapter.innerHTML = '<option value="">Cargando libros...</option>';
+            bookSelectChapter.disabled = true;
+            chapterSelectChapter.innerHTML = '<option value="">Seleccionar un libro primero</option>';
+            chapterSelectChapter.disabled = true;
+
+            if (!bibleId) {
+                 bookSelectChapter.innerHTML = '<option value="">Seleccione una versión</option>';
+                return;
+            }
+            const apiUrl = `https://api.scripture.api.bible/v1/bibles/${bibleId}/books`;
+            try {
+                const response = await fetch(apiUrl, { headers: { 'api-key': SCRIPTURE_API_KEY, 'Accept': 'application/json' } });
+                 if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({ message: `API error: ${response.status}` }));
+                    throw new Error(errorData.message || `Error de API al buscar libros: ${response.status}`);
+                }
+                const result = await response.json();
+                currentBooks = result.data;
+                bookSelectChapter.innerHTML = '<option value="">Seleccionar un libro</option>';
+                if (currentBooks && currentBooks.length > 0) {
+                    currentBooks.forEach(book => {
+                        const option = document.createElement('option');
+                        option.value = book.id;
+                        option.textContent = book.name;
+                        bookSelectChapter.appendChild(option);
+                    });
+                    bookSelectChapter.disabled = false;
+                } else {
+                    bookSelectChapter.innerHTML = '<option value="">No se encontraron libros</option>';
+                    showBibleMessageBox("No se encontraron libros para esta versión.");
+                }
+            } catch (error) {
+                console.error("Error fetching books:", error);
+                bookSelectChapter.innerHTML = '<option value="">Error al cargar libros</option>';
+                showBibleMessageBox(`Error al cargar libros: ${error.message}`);
+            }
+        }
+
+        async function fetchChaptersForBook(bibleId, bookId) {
+            const chapterSelectChapter = document.getElementById('chapterSelectChapter');
+            if (!chapterSelectChapter) return;
+
+            chapterSelectChapter.innerHTML = '<option value="">Cargando capítulos...</option>';
+            chapterSelectChapter.disabled = true;
+            if (!bibleId || !bookId) {
+                chapterSelectChapter.innerHTML = '<option value="">Seleccione libro</option>';
+                return;
+            }
+
+            const apiUrl = `https://api.scripture.api.bible/v1/bibles/${bibleId}/books/${bookId}/chapters`;
+            try {
+                const response = await fetch(apiUrl, { headers: { 'api-key': SCRIPTURE_API_KEY, 'Accept': 'application/json' } });
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({ message: `API error: ${response.status}` }));
+                    throw new Error(errorData.message || `Error de API al buscar capítulos: ${response.status}`);
+                }
+                const result = await response.json();
+                chapterSelectChapter.innerHTML = '<option value="">Seleccionar un capítulo</option>';
+                if (result.data && result.data.length > 0) {
+                    result.data.forEach(chapter => {
+                        if (chapter.number && chapter.number !== "0") { 
+                            const option = document.createElement('option');
+                            option.value = chapter.id;
+                            option.textContent = `Capítulo ${chapter.number}`;
+                            chapterSelectChapter.appendChild(option);
+                        }
+                    });
+                    chapterSelectChapter.disabled = false;
+                } else {
+                    chapterSelectChapter.innerHTML = '<option value="">No hay capítulos</option>';
+                    showBibleMessageBox("No se encontraron capítulos para este libro.");
+                }
+            } catch (error) {
+                console.error("Error fetching chapters:", error);
+                chapterSelectChapter.innerHTML = '<option value="">Error al cargar</option>';
+                showBibleMessageBox(`Error al cargar capítulos: ${error.message}`);
+            }
+        }
+        
+        const bibleVersionSelectElem = document.getElementById('bibleVersionSelect');
+        if (bibleVersionSelectElem) {
+            bibleVersionSelectElem.addEventListener('change', (event) => {
+                fetchBooksForBible(event.target.value);
+            });
+        }
+
+        const bookSelectChapterElem = document.getElementById('bookSelectChapter');
+        if (bookSelectChapterElem) {
+            bookSelectChapterElem.addEventListener('change', (event) => {
+                const selectedBibleId = document.getElementById('bibleVersionSelect')?.value;
+                if (selectedBibleId) { // Ensure bibleId is present
+                    fetchChaptersForBook(selectedBibleId, event.target.value);
+                }
+            });
+        }
+        
+        const loadChapterBtnElem = document.getElementById('loadChapterBtn');
+        if (loadChapterBtnElem) {
+            loadChapterBtnElem.addEventListener('click', async () => {
+                const bibleId = document.getElementById('bibleVersionSelect')?.value;
+                const bookId = document.getElementById('bookSelectChapter')?.value;
+                const chapterId = document.getElementById('chapterSelectChapter')?.value;
+                const chapterRefEl = document.getElementById('chapterReference');
+                const chapterContentEl = document.getElementById('chapterContent');
+                const verseLookupDisp = document.getElementById('verseLookupDisplay');
+
+                if (!chapterRefEl || !chapterContentEl || !verseLookupDisp) return;
+
+                verseLookupDisp.classList.add('hidden');
+                document.getElementById('chapterDisplay')?.classList.remove('hidden');
+
+                if (!bibleId || !bookId || !chapterId) {
+                    showBibleMessageBox("Por favor, selecciona versión, libro y capítulo.");
+                    return;
+                }
+                
+                const bookOption = document.getElementById('bookSelectChapter').options[document.getElementById('bookSelectChapter').selectedIndex];
+                const chapterOption = document.getElementById('chapterSelectChapter').options[document.getElementById('chapterSelectChapter').selectedIndex];
+                const bibleOption = document.getElementById('bibleVersionSelect').options[document.getElementById('bibleVersionSelect').selectedIndex];
+
+                const bookName = bookOption ? bookOption.text : "Libro desconocido";
+                const chapterNum = chapterOption ? chapterOption.text.replace('Capítulo ','') : "Capítulo desconocido";
+                const bibleName = bibleOption ? bibleOption.text : "Versión desconocida";
+
+
+                chapterRefEl.textContent = `Cargando ${bookName} ${chapterNum} (${bibleName})...`;
+                chapterContentEl.innerHTML = "<p class='text-center'>Por favor espera...</p>";
+
+                try {
+                    const apiUrl = `https://api.scripture.api.bible/v1/bibles/${bibleId}/chapters/${chapterId}?content-type=html&include-notes=false&include-titles=true&include-chapter-numbers=false&include-verse-numbers=true&include-verse-spans=false`;
+                    const response = await fetch(apiUrl, { headers: { 'api-key': SCRIPTURE_API_KEY, 'Accept': 'application/json' } });
+                    if (!response.ok) {
+                        const errorData = await response.json().catch(() => ({ message: `API error: ${response.status}` }));
+                        throw new Error(errorData.message || `Error de API al cargar el contenido del capítulo: ${response.status}`);
+                    }
+                    const result = await response.json();
+                    if (result.data && result.data.content) {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(result.data.content, 'text/html');
+                        doc.querySelectorAll('.footnote, .crossreference, .chapternum, .v, .p > .s1, .p > .s').forEach(el => el.remove()); // Remove more unwanted elements
+                        doc.querySelectorAll('p.p').forEach(p => { // Unwrap paragraphs that are just verse containers
+                            if (p.children.length === 1 && p.children[0].classList.contains('verse')) {
+                                p.replaceWith(...p.childNodes);
+                            }
+                        });
+                        doc.querySelectorAll('.verse .versenum').forEach(el => { // More specific selector for verse numbers
+                            el.outerHTML = `<strong class="text-blue-700 mr-1">${el.textContent.trim()}</strong>`;
+                        });
+                        chapterRefEl.textContent = result.data.reference || `${bookName} ${chapterNum}`;
+                        chapterContentEl.innerHTML = doc.body.innerHTML || "<p>Contenido no disponible.</p>";
+                    } else {
+                        showBibleMessageBox("Capítulo no encontrado o contenido vacío.");
+                        chapterRefEl.textContent = "Capítulo No Encontrado";
+                        chapterContentEl.innerHTML = "<p class='text-center'>El contenido no pudo ser cargado.</p>";
+                    }
+                } catch (error) {
+                    console.error("Error loading chapter:", error);
+                    showBibleMessageBox(`Error al cargar capítulo: ${error.message}`);
+                    chapterRefEl.textContent = "Error al Cargar Capítulo";
+                    chapterContentEl.innerHTML = "<p class='text-center'>Hubo un problema al cargar el contenido.</p>";
+                }
+            });
+        }
+
+        const lookupVersesBtnElem = document.getElementById('lookupVersesBtn');
+        if (lookupVersesBtnElem) {
+            lookupVersesBtnElem.addEventListener('click', async () => {
+                const bibleId = document.getElementById('bibleVersionSelect')?.value;
+                const bookInput = document.getElementById('bookInputVerse')?.value.trim();
+                const chapterInput = document.getElementById('chapterInputVerse')?.value.trim();
+                const startVerse = document.getElementById('startVerseInput')?.value.trim();
+                const endVerse = document.getElementById('endVerseInput')?.value.trim();
+                
+                const verseRefEl = document.getElementById('verseLookupReference');
+                const verseContentEl = document.getElementById('verseLookupContent');
+                const verseDisp = document.getElementById('verseLookupDisplay');
+                const chapterDisp = document.getElementById('chapterDisplay');
+
+                if(!verseRefEl || !verseContentEl || !verseDisp || !chapterDisp) return;
+
+                chapterDisp.classList.add('hidden');
+                verseDisp.classList.remove('hidden');
+
+                if (!bibleId || !bookInput || !chapterInput || !startVerse) {
+                    showBibleMessageBox("Por favor, completa los campos de búsqueda de versículos.");
+                    return;
+                }
+
+                const apiBook = currentBooks.find(b => b.name.toLowerCase() === bookInput.toLowerCase() || b.abbreviation?.toLowerCase() === bookInput.toLowerCase());
+                if (!apiBook) {
+                    showBibleMessageBox(`Libro "${bookInput}" no encontrado. Asegúrate de que el nombre o abreviatura sea correcto para la versión seleccionada.`);
+                    verseRefEl.textContent = "Libro No Encontrado";
+                    verseContentEl.innerHTML = "<p class='text-center'>Verifica el nombre del libro.</p>";
+                    return;
+                }
+                let verseId = `${apiBook.id}.${chapterInput}.${startVerse}`;
+                if (endVerse && parseInt(endVerse) >= parseInt(startVerse)) {
+                    verseId += `-${apiBook.id}.${chapterInput}.${endVerse}`;
+                }
+                
+                const bibleOption = document.getElementById('bibleVersionSelect').options[document.getElementById('bibleVersionSelect').selectedIndex];
+                const bibleName = bibleOption ? bibleOption.text : "Versión desconocida";
+
+                verseRefEl.textContent = `Cargando ${bookInput} ${chapterInput}:${startVerse}${endVerse ? '-' + endVerse : ''} (${bibleName})...`;
+                verseContentEl.innerHTML = "<p class='text-center'>Por favor espera...</p>";
+
+                try {
+                    const apiUrl = `https://api.scripture.api.bible/v1/bibles/${bibleId}/verses/${verseId}?content-type=html&include-notes=false&include-titles=false&include-chapter-numbers=false&include-verse-numbers=true&include-verse-spans=false`;
+                    const response = await fetch(apiUrl, { headers: { 'api-key': SCRIPTURE_API_KEY, 'Accept': 'application/json' } });
+                    if (!response.ok) {
+                        const errorData = await response.json().catch(() => ({ message: `API error: ${response.status}` }));
+                        throw new Error(errorData.message || `Error de API al buscar versículo(s): ${response.status}`);
+                    }
+                    const result = await response.json();
+                    if (result.data && result.data.content) {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(result.data.content, 'text/html');
+                        doc.querySelectorAll('.footnote, .crossreference, .chapternum, .v, .p > .s1, .p > .s').forEach(el => el.remove());
+                         doc.querySelectorAll('.verse .versenum').forEach(el => { 
+                            el.outerHTML = `<strong class="text-blue-700 mr-1">${el.textContent.trim()}</strong>`;
+                        });
+                        verseRefEl.textContent = result.data.reference || `${bookInput} ${chapterInput}:${startVerse}${endVerse ? '-' + endVerse : ''}`;
+                        verseContentEl.innerHTML = doc.body.innerHTML || "<p>Contenido no disponible.</p>";
+                    } else {
+                        showBibleMessageBox("Versículo(s) no encontrado(s) o contenido vacío.");
+                        verseRefEl.textContent = "Versículo(s) No Encontrado(s)";
+                        verseContentEl.innerHTML = "<p class='text-center'>El contenido no pudo ser cargado.</p>";
+                    }
+                } catch (error) {
+                    console.error("Error loading verse(s):", error);
+                    showBibleMessageBox(`Error al cargar versículo(s): ${error.message}`);
+                    verseRefEl.textContent = "Error al Cargar Versículo(s)";
+                    verseContentEl.innerHTML = "<p class='text-center'>Hubo un problema al cargar el contenido.</p>";
+                }
+            });
+        }
+
+        if (document.getElementById('bible-page') && document.getElementById('bibleVersionSelect')) {
+             fetchBibleVersions();
+        }
+
+    </script>
+</body>
+</html>
